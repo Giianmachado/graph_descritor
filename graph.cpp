@@ -2,6 +2,8 @@
 #include <opencv2/opencv.hpp>
 #include <igraph/igraph.h>
 #include <utils.h>
+#include <string>
+#include <writefile.h>
 
 using namespace std;
 using namespace cv;
@@ -11,9 +13,11 @@ graph::graph(){}
 /**
  * @brief graph::build_graph
  * @param img
+ * @param choice
+ * @param filename
  * Build a graph and calc the djkistra path
  */
-void graph::build_graph(Mat img){
+void graph::build_graph(Mat img, int choice, string filename){
     //Declarações
     //Utils methods
     utils u;
@@ -27,8 +31,6 @@ void graph::build_graph(Mat img){
     igraph_real_t weights_data[num_of_edges];
     //Vector of weigths used by igraph
     igraph_vector_t weights;
-    //Result matrix
-    igraph_matrix_t res;
 
     //Initialize graph with the number of nodes
     igraph_empty(&g /*Graph*/, img.cols*img.rows /*Number of nodes*/, IGRAPH_UNDIRECTED /*Type pf graph = undirected*/);
@@ -42,11 +44,83 @@ void graph::build_graph(Mat img){
     weights_init(weights_data /*vector of weights*/, img /*image*/);
     //make a cast type on the vector of the weights to the type igraph_real_t
     igraph_vector_view(&weights /*weights result transformation*/, weights_data /*weights data with weights*/,sizeof(weights_data)/sizeof(igraph_real_t));
-    //Initialize result matrix with 0's
-    igraph_matrix_init(&res /*result matrix*/, 0, 0);
-    //Build the matrix with the graph and all weights
-    igraph_shortest_paths_dijkstra(&g, &res, igraph_vss_all(), igraph_vss_all(),&weights, IGRAPH_ALL);
-    //u.showImage(img);
+
+    //Choice the calcs
+    if(choice == 1) average(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    //else if (choice == 2) cout << choice << endl;
+    //else if (choice == 3) cout << choice << endl;
+    //else if (choice == 4) cout << choice << endl;
+    //else if (choice == 5) cout << choice << endl;
+    //else cout << choice << endl;
+
+    //Free de memória
+    igraph_destroy(&g);
+    igraph_vector_destroy(&v);
+}
+
+/**
+ * @brief graph::average
+ * @param g
+ * @param weights
+ * @param weights_data
+ * @param filename
+ */
+void graph::average(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img){
+
+    //Vector anwers of nodes
+    igraph_vector_t vert;
+    //Vector anwers of edges
+    igraph_vector_t edge;
+
+    //Initialize vectors with 0
+    igraph_vector_init(&vert, 0);
+    igraph_vector_init(&edge, 0);
+
+    //Define the positions
+    int t = img.cols;
+
+    //Get shortest path the direction 1
+    igraph_get_shortest_path_dijkstra(g /**/,&vert /**/,&edge /**/, ((t-1)/2)*t/*from*/, ((((t-1)/2)*t)+(t-1))/*to*/, weights/**/, IGRAPH_ALL/**/);
+    calcSumAndAverage(edge, weights_data, filename);
+
+    //Get shortest path the direction 2
+    igraph_get_shortest_path_dijkstra(g /**/,&vert /**/,&edge /**/, (t*(t-1))/*from*/, (t-1)/*to*/, weights/**/, IGRAPH_ALL/**/);
+    calcSumAndAverage(edge, weights_data, filename);
+
+    //Get shortest path the direction 3
+    igraph_get_shortest_path_dijkstra(g /**/,&vert /**/,&edge /**/, ((t-1)*(t)+((t-1)/2))/*from*/, ((t-1)/2)/*to*/, weights/**/, IGRAPH_ALL/**/);
+    calcSumAndAverage(edge, weights_data, filename);
+
+    //Get shortest path the direction 4
+    igraph_get_shortest_path_dijkstra(g /**/,&vert /**/,&edge /**/, ((t*t)-1)/*from*/, 0/**/, weights/*to*/, IGRAPH_ALL/**/);
+    calcSumAndAverage(edge, weights_data, filename);
+
+    //Free memory
+    igraph_vector_destroy(&edge);
+    igraph_vector_destroy(&vert);
+}
+
+/**
+ * @brief graph::calcSumAndAverage
+ * @param edge
+ * @param weights_data
+ * @param filename
+ */
+void graph::calcSumAndAverage(igraph_vector_t edge, igraph_real_t *weights_data, string filename){
+    //Declarations
+    int n, i, soma;
+    double aux = 0;
+    writeFile wf;
+
+    n = igraph_vector_size(&edge);
+    for(i = 0,soma = 0;i < n;i++)
+        soma += weights_data[((int)VECTOR(edge)[i])];
+
+    //Get the average value
+    aux = (double) soma/n;
+
+    //Write the value
+    wf.writeDouble(aux, filename);
 }
 
 /**

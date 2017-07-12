@@ -12,7 +12,9 @@ TEMPLATE = app
 SOURCES += main.cpp \
     divider_and_computer.cpp \
     utils.cpp \
-    graph.cpp
+    graph.cpp \
+    writefile.cpp \
+    readfile.cpp
 
 LIBS += `pkg-config opencv --libs`
 
@@ -20,7 +22,9 @@ HEADERS += \
     ../Downloads/igraph-0.7.1/include/igraph.h \
     divider_and_computer.h \
     utils.h \
-    graph.h
+    graph.h \
+    writefile.h \
+    readfile.h
 
 unix:!macx: LIBS += -L$$PWD/../../../../../usr/local/lib/ -ligraph
 

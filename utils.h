@@ -10,6 +10,7 @@ class utils
 public:
     utils();
     void showImage(Mat img);
+    int maxDivisor(Mat img, int r);
 };
 
 #endif // UTILS_H

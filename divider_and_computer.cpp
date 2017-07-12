@@ -2,16 +2,20 @@
 #include <opencv2/opencv.hpp>
 #include <utils.h>
 #include <graph.h>
+#include <string>
+#include <writefile.h>
 
 using namespace std;
 using namespace cv;
 
 divider_and_computer::divider_and_computer(){}
 
-void divider_and_computer::compute(Mat img, int r){
+void divider_and_computer::compute(Mat img, int r, int choice, string filename, string class_of_image){
 
     //Util function as showImage
     utils u;
+    //Writer
+    writeFile wf;
     //Class to build a graph and calculate the values
     graph g;
     //Define the number of pixel will be cutted
@@ -29,7 +33,11 @@ void divider_and_computer::compute(Mat img, int r){
             //Cut image
             img_rect = img(region_of_interest);
             //Call the function to build a graph and calculate the values
-            g.build_graph(img_rect);
+            g.build_graph(img_rect, choice, filename);
+            //u.showImage(img_rect);
         }
     }
+
+    //Write class od end line
+    wf.writeClass(filename, class_of_image);
 }

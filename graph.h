@@ -10,10 +10,12 @@ class graph
 {
     public:
         graph();
-        void build_graph(Mat img);
+        void build_graph(Mat img, int choice, string filename);
     private:
         void edges_init(igraph_vector_t v, Mat img);
         void weights_init(igraph_real_t *weights_data, Mat img);
+        void average(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img);
+        void calcSumAndAverage(igraph_vector_t edge, igraph_real_t *weights_data, string filename);
 };
 
 #endif // GRAPH_H
