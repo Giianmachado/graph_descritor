@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cstdio>
 
 using namespace std;
 
@@ -25,17 +26,19 @@ void writeFile::makeHeader(int r,int option, string filename){
     //conter to attributtes
     int cont = 1;
 
-    //if exists, delete
-
     //Decides operations from number of attributes
     if(option == 1 || option == 2)
         num_of_attributes = r*r*4;
     else if(option == 4 || option == 5)
-        num_of_attributes = r*r*5;
+        num_of_attributes = r*r;
     else if(option == 3)
         num_of_attributes = r*r*8;
     else if(option == 6)
-        num_of_attributes = r*r*10;            
+        num_of_attributes = r*r*2;
+    else if(option == 7 || option == 8)
+        num_of_attributes = r*r*5;
+    else if(option == 9)
+        num_of_attributes = r*r*10;
 
     //Title o work
     fs << "@RELATION IC" << endl << endl;
@@ -44,7 +47,7 @@ void writeFile::makeHeader(int r,int option, string filename){
 
     fs << "@attribute class {";
     fs << "Grass,";
-    /*fs << "Bark,";
+    fs << "Bark,";
     fs << "Straw,";
     fs << "HerringboneWeave,";
     fs << "WoolenCloth,";
@@ -62,7 +65,7 @@ void writeFile::makeHeader(int r,int option, string filename){
     fs << "MetalGrates,";
     fs << "Sand,";
     fs << "HexagonalHoleArray,";
-    fs << "RoughWall,Gravel";*/
+    fs << "RoughWall,Gravel";
     fs << "}" << endl << endl << "@data" << endl;
 
     //Close the file

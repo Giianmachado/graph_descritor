@@ -46,16 +46,149 @@ void graph::build_graph(Mat img, int choice, string filename){
     igraph_vector_view(&weights /*weights result transformation*/, weights_data /*weights data with weights*/,sizeof(weights_data)/sizeof(igraph_real_t));
 
     //Choice the calcs
-    if(choice == 1) average(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
-    //else if (choice == 2) cout << choice << endl;
-    //else if (choice == 3) cout << choice << endl;
-    //else if (choice == 4) cout << choice << endl;
-    //else if (choice == 5) cout << choice << endl;
-    //else cout << choice << endl;
+    if(choice == 1)
+        average(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    else if (choice == 2)
+        standard_deviation(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    else if (choice == 3){
+        average(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+        standard_deviation(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    }
+    else if (choice == 4)
+        average_spanning_tree(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    else if (choice == 5)
+        standard_deviation_spanning_tree(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    else if (choice == 6){
+        average_spanning_tree(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+        standard_deviation_spanning_tree(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    }
+    else if (choice == 7){
+        average(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+        average_spanning_tree(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    }
+    else if (choice == 8){
+        standard_deviation(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+        standard_deviation_spanning_tree(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    }
+    else if (choice == 9){
+        average(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+        average_spanning_tree(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+        standard_deviation(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+        standard_deviation_spanning_tree(&g /*graph*/,&weights /*weights*/, weights_data /*weigths*/, filename /*Filename*/, img /*image*/);
+    }
 
     //Free de memória
     igraph_destroy(&g);
     igraph_vector_destroy(&v);
+}
+
+/**
+ * @brief graph::average_spanning_tree
+ * @param g
+ * @param weights
+ * @param weights_data
+ * @param filename
+ * @param img
+ */
+void graph::standard_deviation_spanning_tree(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img){
+    //Result vector
+    igraph_vector_t res;
+    //Initialize vector
+    igraph_vector_init(&res,0);
+    //Make spanning tree
+    igraph_minimum_spanning_tree(g,&res,weights);
+    //Calc the media
+    calcSumAndStandardDeviation(res, weights_data, filename);
+}
+
+/**
+ * @brief graph::average_spanning_tree
+ * @param g
+ * @param weights
+ * @param weights_data
+ * @param filename
+ * @param img
+ */
+void graph::average_spanning_tree(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img){
+    //Result vector
+    igraph_vector_t res;
+    //Initialize vector
+    igraph_vector_init(&res,0);
+    //Make spanning tree
+    igraph_minimum_spanning_tree(g,&res,weights);
+    //Calc the media
+    calcSumAndAverage(res, weights_data, filename);
+}
+
+/**
+ * @brief graph::standard_deviation
+ * @param g
+ * @param weights
+ * @param weights_data
+ * @param filename
+ * @param img
+ */
+void graph::standard_deviation(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img){
+    //Vector anwers of nodes
+    igraph_vector_t vert;
+    //Vector anwers of edges
+    igraph_vector_t edge;
+
+    //Initialize vectors with 0
+    igraph_vector_init(&vert, 0);
+    igraph_vector_init(&edge, 0);
+
+    //Define the positions
+    int t = img.cols;
+
+    //Get shortest path the direction 1
+    igraph_get_shortest_path_dijkstra(g /**/,&vert /**/,&edge /**/, ((t-1)/2)*t/*from*/, ((((t-1)/2)*t)+(t-1))/*to*/, weights/**/, IGRAPH_ALL/**/);
+    calcSumAndStandardDeviation(edge, weights_data, filename);
+
+    //Get shortest path the direction 2
+    igraph_get_shortest_path_dijkstra(g /**/,&vert /**/,&edge /**/, (t*(t-1))/*from*/, (t-1)/*to*/, weights/**/, IGRAPH_ALL/**/);
+    calcSumAndStandardDeviation(edge, weights_data, filename);
+
+    //Get shortest path the direction 3
+    igraph_get_shortest_path_dijkstra(g /**/,&vert /**/,&edge /**/, ((t-1)*(t)+((t-1)/2))/*from*/, ((t-1)/2)/*to*/, weights/**/, IGRAPH_ALL/**/);
+    calcSumAndStandardDeviation(edge, weights_data, filename);
+
+    //Get shortest path the direction 4
+    igraph_get_shortest_path_dijkstra(g /**/,&vert /**/,&edge /**/, ((t*t)-1)/*from*/, 0/**/, weights/*to*/, IGRAPH_ALL/**/);
+    calcSumAndStandardDeviation(edge, weights_data, filename);
+
+    //Free memory
+    igraph_vector_destroy(&edge);
+    igraph_vector_destroy(&vert);
+}
+
+/**
+ * @brief graph::calcSumAndStandardDeviation
+ * @param edge
+ * @param weights_data
+ * @param filename
+ */
+void graph::calcSumAndStandardDeviation(igraph_vector_t edge, igraph_real_t *weights_data, string filename){
+    //Declarations
+    int n, i, soma;
+    double aux = 0, media = 0;
+    writeFile wf;
+
+    n = igraph_vector_size(&edge);
+    for(i = 0,soma = 0;i < n;i++)
+        soma += weights_data[((int)VECTOR(edge)[i])];
+
+    //Get average
+    media = (double) soma/n;
+
+    for(i = 0,soma = 0;i < n;i++)
+        soma += (media - weights_data[((int)VECTOR(edge)[i])])*(media - weights_data[((int)VECTOR(edge)[i])]);
+
+    //Get the average value
+    aux = (double) sqrt(soma/(n-1));
+
+    //Write the value
+    wf.writeDouble(aux, filename);
 }
 
 /**

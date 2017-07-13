@@ -16,6 +16,10 @@ class graph
         void weights_init(igraph_real_t *weights_data, Mat img);
         void average(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img);
         void calcSumAndAverage(igraph_vector_t edge, igraph_real_t *weights_data, string filename);
+        void standard_deviation(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img);
+        void calcSumAndStandardDeviation(igraph_vector_t edge, igraph_real_t *weights_data, string filename);
+        void average_spanning_tree(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img);
+        void standard_deviation_spanning_tree(igraph_t *g, igraph_vector_t *weights, igraph_real_t *weights_data, string filename, Mat img);
 };
 
 #endif // GRAPH_H
