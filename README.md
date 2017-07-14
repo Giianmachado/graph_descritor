@@ -1,2 +1,2 @@
 # Graph Descritor
-* Técnicas de Descrição de Imagens Baseadas em Grafo
+ # Técnicas de Descrição de Imagens Baseadas em Grafo
