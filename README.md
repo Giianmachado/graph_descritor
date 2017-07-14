@@ -22,3 +22,11 @@ Paramêtros
   * 7 - Item 1 concatenado com o item 4
   * 8 - Item 2 concatenado com o item 
   * 9 - Item 3 concatenado com o item 6
+* -f: Caminho (relativo ou absoluto) com o nome do arquivo que será gerado com o formato .arff (A parte ".arff" deve ser escrita no caminho assim como no exemplo)
+* -l: Caminho (relativo ou absoluto) do arquivo que contèm as labels das imagens em sequência das imagens no arquivos de _paths_. Cada label deve ocupar uma linha, sem deixar linhas em branco no arquivo. Verificar exemplo no arquivo _labels_.
+* -p: Caminho (relativo ou absoluto) do arquivo que contém as strings dos caminhos das imagens para processamento. Cada caminho deve ser escrito em uma linha. Verificar exemplo no arquivo _paths_.
+* -cl: Caminho (relativo ou absoluto) do arquivo que contém as strings das classes das imagens para processamento. Cada classe deve ser escrita em uma linha. Verificar exemplo no arquivo _classes_.
+
+Obeservações
+---
+A ordem dos paramêtros deve ser respeitada. A biblioteca [link]OpenCV e [link]Igraph devem estar instaladas e configuradas no Makefile.
