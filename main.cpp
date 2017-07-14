@@ -51,7 +51,7 @@ int main(int argc, char *argv[]){
     u.print_information_author();
 
     //Build header file
-    //wf.makeHeader(r /*box size*/,choice /*type of descritor*/,filename /*filename*/);
+    wf.makeHeader(r /*box size*/,choice /*type of descritor*/,filename /*filename*/);
 
     //Compute data
     for(int i = 0;i < labels.size()-1;i++){
