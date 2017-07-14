@@ -29,4 +29,4 @@ Paramêtros
 
 Obeservações
 ---
-A ordem dos paramêtros deve ser respeitada. A biblioteca [link]OpenCV e [link]Igraph devem estar instaladas e configuradas no Makefile.
+A ordem dos paramêtros deve ser respeitada. A biblioteca [OpenCV](http://opencv.org/) e [Igraph](http://igraph.org) devem estar instaladas e configuradas no Makefile. Em caso de alterações, recompile o programa com o camando _make_.
