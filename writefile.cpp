@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <cstdio>
+#include <vector>
 
 using namespace std;
 
@@ -15,14 +16,14 @@ writeFile::writeFile(){}
  * @param filename
  * Makes the header of arff file
  */
-void writeFile::makeHeader(int r,int option, string filename){
+void writeFile::makeHeader(int r,int option, string filename, vector<string> classes){
 
     //number of attributtes to print on arff
-    int num_of_attributes;
+    int num_of_attributes = 0;
     //Writer
     fstream fs;
     //file rules
-    fs.open(filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+    fs.open(filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::trunc);
     //conter to attributtes
     int cont = 1;
 
@@ -46,26 +47,9 @@ void writeFile::makeHeader(int r,int option, string filename){
         fs << "@attribute Media" << cont++ << " numeric" << endl;
 
     fs << "@attribute class {";
-    fs << "Grass,";
-    fs << "Bark,";
-    fs << "Straw,";
-    fs << "HerringboneWeave,";
-    fs << "WoolenCloth,";
-    fs << "PressedCalfLeather,";
-    fs << "BeachSand,";
-    fs << "Water,";
-    fs << "WoodGrain,";
-    fs << "Raffia,";
-    fs << "Pigskin,";
-    fs << "BrickWall,";
-    fs << "PlasticBubbles,";
-    fs << "WoodShingleRoof,";
-    fs << "TileRoof,";
-    fs << "WoodFence,";
-    fs << "MetalGrates,";
-    fs << "Sand,";
-    fs << "HexagonalHoleArray,";
-    fs << "RoughWall,Gravel";
+    int len = classes.size();
+    for(int i = 0;i < len;i++)
+        if(i != len-1) fs << classes.at(i) + ",";  else fs << classes.at(i);
     fs << "}" << endl << endl << "@data" << endl;
 
     //Close the file

@@ -15,8 +15,9 @@ public:
     bool verify_r(int r);
     void print_divider();
     void print_information_author();
-    void print_error_r();
+    void print_error_r(string message);
     void print_error_choice();
+    void print_file_options(int r,int c,string filename, string labels, string paths, string classes);
 };
 
 #endif // UTILS_H

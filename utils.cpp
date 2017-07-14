@@ -83,15 +83,14 @@ void utils::print_information_author(){
     cout << "Vinculado ao Projeto Personalização de Consultas por Similaridade em Dados Complexos" << endl;
     cout << "Orientador: Prof. Dr. Pedro Henrique Bugatti" << endl << endl;
     print_divider();
-    usleep(10000000);
 }
 
 /**
  * @brief utils::print_error_r
  */
-void utils::print_error_r(){
+void utils::print_error_r(string message){
     print_divider();
-    cerr << "The argument r is invalid" << endl << endl;
+    cerr << message << endl << endl;
     print_divider();
     abort_programa();
 }
@@ -113,4 +112,24 @@ void utils::print_error_choice(){
     cout << "9 - 3 concat with 6" << endl << endl;
     print_divider();
     abort_programa();
+}
+
+/**
+ * @brief utils::print_file_options
+ * @param r
+ * @param c
+ * @param filename
+ * @param labels
+ * @param paths
+ * @param classes
+ */
+void utils::print_file_options(int r,int c,string filename, string labels, string paths, string classes){
+    cout << "r: " << r << endl;
+    cout << "c: " << c << endl;
+    cout << "path + filename: " << filename << endl;
+    cout << "path labels file: " << labels << endl;
+    cout << "path path's file: " << paths << endl;
+    cout << "path classes file: " << classes << endl << endl;
+    print_divider();
+    usleep(10000000);
 }
