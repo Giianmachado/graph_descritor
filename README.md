@@ -13,7 +13,7 @@ Paramêtros
 ---
 * -r: este paramêtro define o tamanho da caixa de divisão da imagem. Os valores possíveis são: 4, 5, 8, 10, 20, 25, 40, 50, 100.
 * -c: este paramêtro define o tipo de descrição utilizada. As escolhas são:
- * Média do caminho mínimo do algortimo de Dijkstra de 4 direções diferentes (0 graus, 45 graus, 90 graus, 135 graus)
+* * Média do caminho mínimo do algortimo de Dijkstra de 4 direções diferentes (0 graus, 45 graus, 90 graus, 135 graus)
  
  2 - Desvio padrão da mesma configuração do item 1
  
