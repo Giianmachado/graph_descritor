@@ -21,7 +21,7 @@ vector<string> readfile::readClasses(string path){
     //object
     fstream fs;
     //file rules
-    fs.open(path, std::fstream::in | std::fstream::out | std::fstream::app);
+    fs.open(path.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
 
     while(!fs.eof()){
         getline(fs,line);

@@ -22,7 +22,7 @@ void writeFile::makeHeader(int r,int option, string filename){
     //Writer
     fstream fs;
     //file rules
-    fs.open(filename, std::fstream::in | std::fstream::out | std::fstream::app);
+    fs.open(filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
     //conter to attributtes
     int cont = 1;
 
@@ -81,7 +81,7 @@ void writeFile::writeClass(string filename, string class_of_image){
     //Writer
     fstream fs;
     //file rules
-    fs.open(filename, std::fstream::in | std::fstream::out | std::fstream::ate);
+    fs.open(filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::ate);
     //Write class
     fs << class_of_image << endl;
     //close file
@@ -97,7 +97,7 @@ void writeFile::writeDouble(double value, string filename){
     //Writer
     fstream fs;
     //file rules
-    fs.open(filename, std::fstream::in | std::fstream::out | std::fstream::ate);
+    fs.open(filename.c_str(), std::fstream::in | std::fstream::out | std::fstream::ate);
     //Write class
     fs << value << ",";
     //close file

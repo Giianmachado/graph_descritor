@@ -1,0 +1,2 @@
+LIBS += `pkg-config opencv --libs`
+LIBS += `pkg-config --libs --cflags igraph`

@@ -7,6 +7,7 @@
 #include <string>
 #include <readfile.h>
 #include <vector>
+#include <unistd.h>
 
 using namespace std;
 using namespace cv;
@@ -16,46 +17,46 @@ utils u;
 writeFile wf;
 readfile rf;
 
-int main(/*int argc, char *argv[]*/){
+int main(int argc, char *argv[]){
 
-    /**
-     * Can be: 100 50 40 25 20 10 8 5 4
-     */
-    int r = 50;
-    int choice = 9;
-    string  filename = "file.arff";
-    string class_of_image = "Grass";
+    // Gets r value -r
+    int r = atoi(argv[2]);
+
+    //Verify r value
+    if(!u.verify_r(r)) u.print_error_r();
+
+    //Get choice value
+    int choice = atoi(argv[4]);
+
+    //Verify choice value
+    if(choice < 1 || choice > 9) u.print_error_choice();
+
+    //string  filename = "file.arff"; -f
+    string  filename = argv[6];
 
     //Declarations
     Mat img;
     vector<string> labels;
     vector<string> img_paths;
+    vector<string> classes;
 
     //Get all labels in sequence of paths images
     labels = rf.readClasses("/home/gianluca/graph_descritor/labels");
     //Get all paths in file img_paths in sequence from folder
     img_paths = rf.readClasses("/home/gianluca/graph_descritor/paths");
+    //Get all the classes of file .arff
+    classes = rf.readClasses("/home/gianluca/graph_descritor/paths");
 
-    /**
-     * First argument to makeHeader
-     * 1 - average
-     * 2 - standard deviation
-     * 3 - 1 concat with 2
-     *
-     * 4 - Spanning tree average
-     * 5 - Spanning tree standard deviation
-     * 6 - 4 concat with 5
-     *
-     * 7 - 1 concat with 4
-     * 8 - 2 concat with 5
-     * 9 - 3 concat with 6
-     */
-    wf.makeHeader(r /*box size*/,choice /*type of descritor*/,filename /*filename*/);
+    //Print author information and sleep 10 sec
+    u.print_information_author();
+
+    //Build header file
+    //wf.makeHeader(r /*box size*/,choice /*type of descritor*/,filename /*filename*/);
 
     //Compute data
     for(int i = 0;i < labels.size()-1;i++){
         //Read the image
-        img = imread(img_paths.at(i), CV_LOAD_IMAGE_GRAYSCALE);
+        img = imread(img_paths.at(i), CV_LOAD_IMAGE_GRAYSCALE); //Verificar se existe a imagem
         //Log
         cout << "Image " << i+1 << " processing" << endl;
         //Comput
