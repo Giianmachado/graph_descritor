@@ -11,4 +11,6 @@ O código executável tem como definição de entrada o exemplo a seguir.
 
 Paramêtros
 ---
-*
+* -r: este paramêtro define o tamanho da caixa de divisão da imagem. Os valores possíveis são: 4, 5, 8, 10, 20, 25, 40, 50, 100.
+* -c: este paramêtro define o tipo de descrição utilizada. As escolhas são:
+  *
