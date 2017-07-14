@@ -13,4 +13,12 @@ Paramêtros
 ---
 * -r: este paramêtro define o tamanho da caixa de divisão da imagem. Os valores possíveis são: 4, 5, 8, 10, 20, 25, 40, 50, 100.
 * -c: este paramêtro define o tipo de descrição utilizada. As escolhas são:
-  *
+ 1 -
+ 2 -
+ 3 -
+ 4 -
+ 5 -
+ 6 -
+ 7 -
+ 8 - 
+ 9 -
